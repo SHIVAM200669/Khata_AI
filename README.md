@@ -1,113 +1,183 @@
-# KhataAI: AI Financial Intelligence for Small Merchants
+# KhataAI – AI Financial Intelligence for Small Merchants
 
-KhataAI turns a kirana store's handwritten Khata (credit ledger) into a digital system. Merchants can scan ledger pages, record transactions by voice, track customer dues, see a 7-day cash-flow forecast, and ask questions in English, Hindi or Hinglish.
+KhataAI is an AI-powered financial management platform designed for small kirana stores. It helps merchants move from handwritten Khata (credit ledger) books to a digital system using handwritten ledger OCR, voice-based transaction entry, customer tracking, cash-flow forecasting, and an AI-powered Copilot.
 
-![Dashboard](screenshots/dashboard.png)
+The goal is to make everyday bookkeeping simpler, faster, and more accessible for small business owners.
 
-## Problem
+## Problem Statement
 
-Small merchants still keep credit records in handwritten books. This makes it hard to track who owes money, to enter transactions quickly, and to see upcoming cash shortages.
+Many small merchants still maintain customer credit records in handwritten notebooks. Managing these records manually can make it difficult to:
 
-## Features
+- Track customer dues and outstanding payments.
+- Record daily transactions efficiently.
+- Identify duplicate customer entries.
+- Monitor available cash and business expenses.
+- Anticipate potential cash shortages.
 
-- **Handwritten Khata OCR**: upload a ledger image, extract text, and get transaction drafts that the merchant reviews before saving.
-- **Voice-to-transaction**: say "Ramesh bought groceries worth Rs 850 on credit" and get a structured transaction draft.
-- **Customer name matching**: merges variations such as "Ramesh", "Ramesh Bhai" and "Ramesh Ji" into one customer.
-- **Dashboard**: today's sales, available cash, Khata outstanding, customer dues, recent transactions and alerts.
-- **7-day cash-flow forecast**: based on [FILL: how it works, e.g. recent average sales, expenses and expected customer payments].
-- **AI Copilot (Sarvam AI)**: ask "Ramesh ka payment batao" or "Who owes me money?" and get answers from live MySQL data.
-- **Financial alerts**: low cash, projected cash gaps and high outstanding dues.
+KhataAI addresses these challenges by digitizing bookkeeping and providing AI-assisted financial insights.
 
-## Tech Stack
+## Key Features
 
-| Layer | Technology |
+### 1. Handwritten Khata OCR
+- Upload handwritten ledger images.
+- Extract text using OCR.
+- Convert extracted information into structured transaction drafts.
+- Allow merchants to review transactions before saving them.
+- Manually tested OCR on 50+ handwritten ledger images.
+
+### 2. Voice-to-Transaction
+- Record transactions using natural language.
+- Convert voice input into structured transaction information.
+- Reduce the need for manual data entry.
+
+Example:  
+"Ramesh bought groceries worth Rs. 850 on credit."
+
+### 3. Customer Name Matching
+- Identify variations in customer names.
+- Help avoid duplicate customer records.
+- Maintain a more consistent customer and payment history.
+
+Example: `Ramesh`, `Ramesh Bhai`, and `Ramesh Ji`.
+
+### 4. AI Financial Copilot
+- Integrated Sarvam AI for natural-language financial queries.
+- Ask questions in English, Hindi, or Hinglish.
+- Retrieve relevant customer, Khata, and transaction information from MySQL.
+
+Example queries:
+- "Ramesh ka payment batao."
+- "Who owes me money?"
+- "Show my customer dues."
+
+### 5. Financial Dashboard
+The dashboard provides an overview of:
+- Today's sales.
+- Available cash.
+- Outstanding Khata balance.
+- Customer dues.
+- Recent transactions.
+- Financial alerts.
+
+### 6. 7-Day Cash-Flow Forecast
+- Forecasts expected cash flow for the next seven days.
+- Helps merchants identify potential cash shortages.
+- Displays alerts when projected cash falls below the configured minimum threshold.
+
+## Technology Stack
+
+| Layer | Technologies |
 |---|---|
-| Frontend | React, [Vite / Tailwind CSS: keep what you use] |
+| Frontend | React, Vite, Tailwind CSS |
 | Backend | Node.js, Express.js |
 | Database | MySQL |
-| AI | Sarvam AI API (Copilot), [FILL: OCR engine used] |
+| AI Integration | Sarvam AI API |
+| Document Processing | OCR |
+| Development Tools | Git, GitHub, VS Code |
 
 ## How It Works
 
-1. **OCR flow:** Ledger image, then OCR, then text extraction, then AI processing, then transaction draft, then merchant review, then saved to the database.
-2. **Name matching:** [FILL: one or two lines, e.g. normalises names and compares similarity before creating a new customer].
-3. **Forecast:** [FILL: one or two lines on the calculation].
-4. **Copilot:** the question is sent to Sarvam AI together with the merchant's customer, Khata and transaction data from MySQL.
+**1. Ledger Digitization**
+
+Ledger Image → OCR Processing → Text Extraction → Transaction Draft → Merchant Review → MySQL Database
+
+**2. Voice-Based Entry**
+
+Voice Input → Speech Processing → AI Interpretation → Structured Transaction Draft → Merchant Review → Database
+
+**3. Customer Management**
+
+Customer names and transaction records are processed to identify name variations and reduce duplicate customer entries.
+
+**4. AI Copilot**
+
+Merchant Question → Sarvam AI → Relevant MySQL Customer and Transaction Data → Natural-Language Response
+
+**5. Cash-Flow Forecasting**
+
+The platform uses its financial transaction data to generate a seven-day cash-flow forecast and identify potential cash gaps.
 
 ## Project Structure
 
-```
-Khata_AI/
-├── client/      # React frontend
-├── server/      # Node.js + Express API
-├── database/    # MySQL schema and seed data
+```text
+KhataAI/
+├── client/       # React frontend
+├── server/       # Node.js and Express backend
+├── database/     # MySQL schema and database files
 └── README.md
 ```
 
-## Setup
+## Getting Started
 
-### 1. Database
+### Prerequisites
+
+- Node.js and npm
+- MySQL Server
+- Sarvam AI API key
+
+### 1. Clone the Repository
+
 ```bash
-mysql -u root -p < database/schema.sql
-mysql -u root -p < database/seed.sql   # optional sample data
+git clone https://github.com/SHIVAM200669/KhataAI.git
+cd KhataAI
 ```
-[FILL: correct file names from your database folder]
 
-### 2. Backend
+### 2. Configure the Database
+
+- Start your MySQL server.
+- Create the database required by the application.
+- Import the SQL schema and any required seed files from the `database/` directory.
+- Configure your database credentials in the backend environment file.
+
+### 3. Start the Backend
+
 ```bash
 cd server
 npm install
-cp .env.example .env
-npm start
 ```
 
-`.env` variables:
-```
-PORT=5000
-DB_HOST=localhost
-DB_USER=root
-DB_PASSWORD=your_mysql_password
-DB_NAME=your_database_name
-SARVAM_API_KEY=your_sarvam_api_key
-JWT_SECRET=your_jwt_secret   # remove if you do not use JWT
-```
-Never commit your `.env` file.
+Configure the required environment variables in your `.env` file, then start the backend using the start script defined in `package.json`.
 
-### 3. Frontend
+### 4. Start the Frontend
+
+Open another terminal:
+
 ```bash
 cd client
 npm install
 npm run dev
 ```
 
-## API Endpoints
+The frontend will run at the local development URL displayed by Vite.
 
-[FILL: list your main routes, for example]
-
-| Method | Endpoint | Description |
-|---|---|---|
-| POST | `/api/...` | Upload ledger image for OCR |
-| POST | `/api/...` | Create transaction |
-| GET | `/api/...` | List customers and dues |
-| GET | `/api/...` | 7-day forecast |
-| POST | `/api/...` | Copilot question |
+**Note:** Refer to the actual configuration files in the repository for exact database names, environment variables, and available scripts.
 
 ## Testing
 
-OCR was manually tested on 50+ handwritten ledger images. [FILL: one honest line, e.g. printed text worked well, messy handwriting was less reliable.]
+- Manually tested the handwritten ledger OCR workflow on 50+ ledger images.
+- Transaction drafts are reviewed before being saved.
+- The application includes duplicate detection and customer Khata management workflows.
 
 ## Known Limitations
 
-- OCR accuracy drops on messy or faded handwriting, so transaction drafts always need merchant review.
-- The forecast is [FILL: simple estimate, not a trained ML model, if true].
-- [Add any other honest limits.]
+- OCR accuracy can vary depending on handwriting quality, image clarity, and lighting.
+- Extracted transactions require merchant review before saving.
+- Cash-flow forecasts are estimates and should not be treated as guaranteed financial predictions.
+- AI-generated responses depend on the quality of the available transaction and customer data.
 
-## Screenshots
+## Future Improvements
 
-| Dashboard | OCR Review | Copilot |
-|---|---|---|
-| ![](screenshots/dashboard.png) | ![](screenshots/ocr.png) | ![](screenshots/copilot.png) |
+- Improve OCR accuracy for different handwriting styles.
+- Enhance cash-flow forecasting.
+- Add more regional language support.
+- Improve financial reporting and merchant insights.
+- Expand automated transaction validation.
 
 ## Author
 
-Shivam Chitlangia | [GitHub](https://github.com/SHIVAM200669) | shivamchitlangia1@gmail.com
+**Shivam Chitlangia**
+
+Computer Science and Engineering Student  
+SRM Institute of Science and Technology, Chennai
+
+[GitHub Profile](https://github.com/SHIVAM200669)
